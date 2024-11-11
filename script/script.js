@@ -2,53 +2,52 @@ const canvas = document.getElementById('game');
 const ctx = canvas.getContext("2d");
 
 const fon = new Image();
-fon.src = "../img/fon.png";
-
+fon.src = "../img/game/fon.png";
 
 const foodImg = new Image();
-foodImg.src = "../img/mouse.png";
+foodImg.src = "../img/game/mouse.png";
 
 
 let snakeHead = new Image();
-snakeHead.src = "../img/head_right.png";
+snakeHead.src = "../img/game/head_right.png";
 
 let snakeEndGorizontalLeft = new Image();
-snakeEndGorizontalLeft.src = "../img/Body_end_gorizontal_left.png";
+snakeEndGorizontalLeft.src = "../img/game/Body_end_gorizontal_left.png";
 
 let snakeEndGorizontalRight = new Image();
-snakeEndGorizontalRight.src = "../img/Body_end_gorizontal_right.png";
+snakeEndGorizontalRight.src = "../img/game/Body_end_gorizontal_right.png";
 
 let BodyEndVerticB = new Image();
-BodyEndVerticB.src = "../img/Body_end_vertic_B.png";
+BodyEndVerticB.src = "../img/game/Body_end_vertic_B.png";
 
 let BodyEndVerticT = new Image();
-BodyEndVerticT.src = "../img/Body_end_vertic_T.png";
+BodyEndVerticT.src = "../img/game/Body_end_vertic_T.png";
 
 let BodyVertic = new Image();
-BodyVertic.src = "../img/Body_vertic.png";
+BodyVertic.src = "../img/game/Body_vertic.png";
 
 let BodyGorizontal = new Image();
-BodyGorizontal.src = "../img/Body_gorizontal.png";
+BodyGorizontal.src = "../img/game/Body_gorizontal.png";
 
 let BodyLB = new Image();
-BodyLB.src = "../img/Body_L_B.png";
+BodyLB.src = "../img/game/Body_L_B.png";
 
 let BodyLT = new Image();
-BodyLT.src = "../img/Body_L_T.png";
+BodyLT.src = "../img/game/Body_L_T.png";
 
 let BodyRB = new Image();
-BodyRB.src = "../img/Body_R_B.png";
+BodyRB.src = "../img/game/Body_R_B.png";
 
 let BodyRT = new Image();
-BodyRT.src = "../img/Body_R_T.png";
+BodyRT.src = "../img/game/Body_R_T.png";
 
 let Stone = new Image();
-Stone.src = "../img/stone.png";
+Stone.src = "../img/game/stone.png";
 
 let fonLose = new Image();
-fonLose.src = "../img/fonLose.png";
+fonLose.src = "../img/game/fonLose.png";
 let fonWin = new Image();
-fonWin.src = "../img/fonWin.png";
+fonWin.src = "../img/game/fonWin.png";
 
 
 
@@ -77,25 +76,26 @@ snake[1] = {
     x: 5 * box,
     y: 7 * box,
 }
+let AreSpawnStone = false;
 
 document.addEventListener('keydown', direction);
 
 let dir = "space";
 function direction(event) {
-    if ((event.keyCode ==65 || event.keyCode == 37) && dir != "right") {
+    if ((event.keyCode == 65 || event.keyCode == 37) && dir != "right") {
         dir = "left";
 
     }
     else if ((event.keyCode === 87 || event.keyCode == 38) && dir != "down") {
         dir = "up";
     }
-    else if ((event.keyCode ==68 || event.keyCode == 39) && dir != "left") {
+    else if ((event.keyCode == 68 || event.keyCode == 39) && dir != "left") {
         dir = "right";
     }
     else if ((event.keyCode === 83 || event.keyCode == 40) && dir != "up") {
         dir = "down";
     }
-    else if (event.keyCode === 32 ) {
+    else if (event.keyCode === 32) {
         dir = "space";
     }
 
@@ -103,13 +103,65 @@ function direction(event) {
 }
 const areSnakeTurn = () => {
     if (dir === "left")
-        snakeHead.src = "../img/head_left.png";
+        snakeHead.src = "../img/game/head_left.png";
     else if (dir === "right")
-        snakeHead.src = "../img/head_right.png";
+        snakeHead.src = "../img/game/head_right.png";
     else if (dir === "up")
-        snakeHead.src = "../img/head_top.png";
+        snakeHead.src = "../img/game/head_top.png";
     else if (dir === "down")
-        snakeHead.src = "../img/head_bottom.png";
+        snakeHead.src = "../img/game/head_bottom.png";
+}
+let stone = [
+    {
+        x: 3 * box,
+        y: 5 * box,
+    },
+    {
+        x: 4 * box,
+        y: 5 * box,
+    },
+    {
+        x: 5 * box,
+        y: 5 * box,
+    },
+    {
+        x: 6 * box,
+        y: 5 * box,
+    },
+    {
+        x: 7 * box,
+        y: 5 * box,
+    },
+    {
+        x: 8 * box,
+        y: 5 * box,
+    },
+    {
+        x: 9 * box,
+        y: 5 * box,
+    },
+    {
+        x: 10 * box,
+        y: 5 * box,
+    },
+    {
+        x: 11 * box,
+        y: 5 * box,
+    },
+];
+
+const spawnStoneInMap = () => {
+    stone.forEach((element, index) => {
+            stone[index].x = Math.floor((Math.random() * 12)) * box,
+            stone[index].y = Math.floor((Math.random() * 12 + 1)) * box
+        if (stone[index].x >= 4 * box && stone[index].x <= 7 * box && stone[index].y <= 8 * box && stone[index].y >= 6 * box) {
+                stone[index].x = Math.floor((Math.random() * 12)) * box,
+                stone[index].y = Math.floor((Math.random() * 12 + 1)) * box
+            spawnStoneInMap();
+            console.debug(`index :${index}, x:${stone[index].x}, y:${stone[index].y}`);
+        }
+
+    })
 }
 const resetSnake = () => {
     snake = [];
@@ -121,7 +173,7 @@ const resetSnake = () => {
         x: 5 * box,
         y: 7 * box,
     }
-    snakeHead.src = "../img/head_right.png";
+    snakeHead.src = "../img/game/head_right.png";
 }
 let movies = (i) => {
 
@@ -233,10 +285,17 @@ const ifSnakeCrash = () => {
                 resetSnake();
             }
         }
+        //  Проверка на врезание с камнем
+        stone.forEach((element, index) => {
+            if (snake[i].x === stone[index].x && snake[i].y === stone[index].y) {
+                resetSnake();
+                params = -1;
+            }
+        })
     })
 }
 const ifSnakeWeryBig = () => {
-    if (score > 6) {
+    if (score > 130) {
         params = 1;
         resetSnake();
     }
@@ -283,12 +342,13 @@ const drawGame = () => {
 
     ctx.drawImage(fon, 0, 0);
 
+    stone.forEach((element, i) => {
+        ctx.drawImage(Stone, stone[i].x, stone[i].y);
+    })
+
     ctx.drawImage(foodImg, food.x, food.y);
 
     snake.forEach((element, i) => {
-
-
-
         if (i === 0)
             ctx.drawImage(snakeHead, snake[i].x, snake[i].y);
 
@@ -302,7 +362,10 @@ const drawGame = () => {
 
     textScores()
 
-
+    if (AreSpawnStone === false) {
+        spawnStoneInMap();
+        AreSpawnStone = true;
+    }
     let snakeX = snake[0].x;
     let snakeY = snake[0].y;
 
@@ -310,13 +373,17 @@ const drawGame = () => {
         score++;
         respawnFood();
         snake.forEach((val, index) => {
-            if (snake[index].x === food.x && snake[index].y === food.y)
-                respawnFood();
+            stone.forEach((element, i) => {
+                if (snake[index].x === food.x && snake[index].y === food.y || (stone[i].x === food.x && stone[i].y === food.y))
+                    respawnFood();
+            })
         })
     } else {
         snake.forEach((val, index) => {
-            if (snake[index].x === food.x && snake[index].y === food.y)
-                respawnFood();
+            stone.forEach((element, i) => {
+                if (snake[index].x === food.x && snake[index].y === food.y || (stone[i].x === food.x && stone[i].y === food.y))
+                    respawnFood();
+            })
         })
         if (dir !== "space")
             snake.pop();
@@ -340,7 +407,8 @@ const drawGame = () => {
 
     ifSnakeCrash();
     ifSnakeWeryBig();
-    if(dir === "space"){
+    if (dir === "space") {
+        // AreSpawnStone = false;
         resetSnake();
         params = 0
         score = 0;
